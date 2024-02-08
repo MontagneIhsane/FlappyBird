@@ -6,13 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let birdLeft = 220;
     let birdBottom = 450;
-    let gravity = 3;
+    let gravity = 2;
     let isGameOver = false;
     let gap = 500;
     let score = 0;
 
     // Fonction pour sauvegarder le score
-    function saveScore(score) {
+    function bestScore(score) {
         localStorage.setItem('flappy_bird_highscore', score);
     }
 
@@ -39,19 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let gameTimerId = setInterval(startGame, 20);
 
     function control(e) {
-        // utiliser e (event) pour cibler la barre espace
-        // Mots clés qu'on avait trouvé pour faire une recherche 
-        // sur comment cibler un espace : "key, space, eventListeners"
-
-        // quand la touche de contrôle est utilisée, l'oiseau saute (jump())
-        if (e.keyCode === 13) { // 13 corresponds to the Enter key
+        if (e.keyCode === 32) {
             jump();
         }
     }
 
     function jump() {
-        // attention à bien faire en sorte que l'oiseau 
-        // ne puisse sauter que quand il n'a pas dépassé le border-top
         if (birdBottom < 500) {
             birdBottom += 50;
             bird.style.bottom = birdBottom + 'px';
@@ -92,11 +85,10 @@ document.addEventListener('DOMContentLoaded', () => {
             obstacle.style.left = obstacleLeft + 'px';
             topObstacle.style.left = obstacleLeft + 'px';
 
-            // Si l'obstacle est hors de la vue, le supprimer et générer un nouveau
             if (obstacleLeft < -60) {
                 gameDisplay.removeChild(obstacle);
                 gameDisplay.removeChild(topObstacle);
-                score++; // augmenter le score ici si nécessaire
+                score++;
                 generateObstacle();
             }
 
@@ -118,12 +110,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentScore = score;
         const highScore = loadScore();
         if (currentScore > highScore) {
-            saveScore(currentScore);
+            bestScore(currentScore);
             alert('New High Score! Your score: ' + currentScore);
         } else {
             alert('Game Over! Your score: ' + currentScore + ', High Score: ' + highScore);
         }
     }
 
-    generateObstacle(); // Commencer à générer des obstacles dès le début du jeu
+    generateObstacle(); 
 });
